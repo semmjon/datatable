@@ -322,7 +322,8 @@ class Compiler:
 
 
     def add_default_python_lib_dir(self):
-        py_dir = sysconfig.get_config_var("BINDIR")
+        # py_dir = sysconfig.get_config_var("BINDIR")
+        py_dir = sys.base_prefix
         py_lib_dir = os.path.join(py_dir, "libs")
         if not os.path.isdir(py_lib_dir):
             self.log.warn("Python lib directory `%s` does not exist, "

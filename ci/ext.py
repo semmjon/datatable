@@ -537,7 +537,7 @@ def generate_build_info(mode=None, strict=False):
         out.write("    git_date='%s',\n" % git_date)
         if git_diff:
             lines = git_diff.split('\n')
-            assert not any("'" in line for line in lines)
+            # assert not any("'" in line for line in lines)
             out.write("    git_diff='%s" % lines[0].strip())
             for line in lines[1:]:
                 out.write("\\n'\n             '%s" % line.strip())
@@ -731,3 +731,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# import os
+# from argparse import Namespace
+#
+# # os.environ["CXX"] = """C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\Hostx64\\x64\\cl.exe"""
+# os.environ["DT_MSVC_PATH"] = """C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\"""
+# # os.chdir("ci")
+# # os.getcwd()
+# cmd_wheel(Namespace(cmd='wheel', verbosity=1, destination='dist', audit=False, strict=False, nobuild=False))
