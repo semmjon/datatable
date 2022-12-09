@@ -14,14 +14,8 @@ jobs:
 #        if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
         strategy:
             matrix:
-              include:
-                - {
-                  python-version: 3.8,
-                  os: windows-latest,
-                  wheel-prefix: -
-                }
-#                os: [windows-latest] # macos-latest, ubuntu-latest,
-#                python: ["3.8"] # , "3.9", "3.10", "3.11"
+                os: [windows-latest] # macos-latest, ubuntu-latest,
+                python: ["3.8"] # , "3.9", "3.10", "3.11"
         steps:
             - name: Check Path for MSVC
               run: |
