@@ -74,14 +74,11 @@ jobs:
 #                WINSDK_INCLUDE_PATH: C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0
 #                WINSDK_LIB_PATH: C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0
 
-            - uses: actions/upload-artifact@v3
-              with:
-                path: ./wheelhouse/*.whl
-
             - name: Move tar.gz Artifact
               run: | 
-                mv ./dist/*.tar.gz ./wheelhouse/data-table-${{ matrix.python }}.tar.gz
-                mv ./dist/*.whl ./wheelhouse/$(ls dist | sed -E "s/(a0[+]build[.][0-9]{10}\.${USER})//" | sed -E "s/(linux)/manylinux/")
+                mkdir wheelhouse
+                mv dist/*.tar.gz wheelhouse/data-table-${{ matrix.python }}.tar.gz
+                mv dist/*.whl wheelhouse/$(ls dist | sed -E "s/(a0[+]build[.][0-9]{10}\.${USER})//" | sed -E "s/(linux)/manylinux/")
 
             # Build and upload to PyPI
             - name: "Builds and uploads to PyPI"
@@ -90,3 +87,7 @@ jobs:
               env:
                   TWINE_USERNAME: __token__
                   TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+            - uses: actions/upload-artifact@v3
+              with:
+                path: ./wheelhouse/*
