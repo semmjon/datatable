@@ -78,7 +78,7 @@ jobs:
               run: | 
                 mkdir wheelhouse
                 mv dist/*.tar.gz wheelhouse/data-table-${{ matrix.python }}.tar.gz
-                mv dist/*.whl wheelhouse/$(ls dist | sed -E "s/(a0[+]build[.][0-9]{10}\.${USER})//" | sed -E "s/(linux)/manylinux/")
+                mv dist/*.whl wheelhouse/$(ls dist/*.whl | sed -E "s/(a0[+]build[.][0-9]{10}\.${USER})//" | sed -E "s/(linux)/manylinux/")
 
             # Build and upload to PyPI
             - name: "Builds and uploads to PyPI"
