@@ -1219,7 +1219,7 @@ bool is_python_system_attr(const dt::CString& attr) {
 
 oobj get_module(const char* modname) {
   py::ostring pyname(modname);
-  // PyImport_GetModule(name)
+//   PyImport_GetModule(name)
   //   Return the already imported module with the given name. If the module
   //   has not been imported yet then returns NULL but does not set an error.
   //   Returns NULL and sets an error if the lookup failed.
