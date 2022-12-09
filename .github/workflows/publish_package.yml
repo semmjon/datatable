@@ -61,6 +61,8 @@ jobs:
             - name: Build wheel
               run: |
                 make wheel
+              env:
+                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
 
             - name: Build wheels
               run: | 
