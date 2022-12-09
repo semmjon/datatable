@@ -21,6 +21,7 @@ jobs:
               run: |
                 if [ "$RUNNER_OS" == "Linux" ]; then
                   echo "linux"
+#                  export WHEEL_PATH=$(ls dist/*.whl | sed -E "s/(a0[+]build[.][0-9]{10}\.${USER})//" | sed -E "s/(linux)/manylinux/")
                 elif [ "$RUNNER_OS" == "macOS" ]; then
                   echo "mac"
                 elif [ "$RUNNER_OS" == "Windows" ]; then
@@ -74,16 +75,14 @@ jobs:
 #                WINSDK_INCLUDE_PATH: C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0
 #                WINSDK_LIB_PATH: C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0
 
-            - name: Move tar.gz Artifact
-              run: | 
-                mkdir wheelhouse
-                mv dist/*.tar.gz wheelhouse/data-table-${{ matrix.python }}.tar.gz
-                mv dist/*.whl wheelhouse/$(ls dist/*.whl | sed -E "s/(a0[+]build[.][0-9]{10}\.${USER})//" | sed -E "s/(linux)/manylinux/")
+            - name: Rename Artifacts
+              run: |
+                python ci/audit.py
 
             # Build and upload to PyPI
             - name: "Builds and uploads to PyPI"
               run: |
-                  python -m twine upload ./wheelhouse/* --skip-existing
+                  python -m twine upload ./dist/* --skip-existing
               env:
                   TWINE_USERNAME: __token__
                   TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
