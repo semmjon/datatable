@@ -48,14 +48,14 @@ jobs:
           submodules: recursive
 
       # Used to host cibuildwheel
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python }}
-
-      - name: Install Twine
-        run: |
-          python -m pip install twine
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: ${{ matrix.python }}
+#
+#      - name: Install Twine
+#        run: |
+#          python -m pip install twine
       #            - name: Install cibuildwheel
       #              run: python -m pip install cibuildwheel==2.11.3
 
@@ -81,11 +81,11 @@ jobs:
 
       - name: Build wheel
         run: |
-          python -m pip install build
-          python -m build .  
+          python3.8 -m pip insatll auditwheel
+          python3.8 -m pip install build
+          python3.8 -m build .  
           if [ "$RUNNER_OS" == "Linux" ]; then
-            pip install auditwheel
-            python -m auditwheel repair $(ls dist/*.whl)
+            python3.8 -m auditwheel repair $(ls dist/*.whl)
           fi
         shell: bash
         env:
