@@ -29,6 +29,9 @@
 [![Documentation Status](https://readthedocs.org/projects/datatable/badge/?version=latest)](https://datatable.readthedocs.io/en/latest/?badge=latest)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cefb760aba044dd489176a46cb36605c)](https://www.codacy.com/gh/semmjon/datatable/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=semmjon/datatable&amp;utm_campaign=Badge_Grade)
 
+This is an automate Fork of datatable.
+Because there is no automated build / publish pipeline for the datatable package, and it is not optimal to always install from GitHub.
+
 This is a Python package for manipulating 2-dimensional tabular data structures
 (aka data frames). It is close in spirit to [pandas][] or [SFrame][]; however we
 put specific emphasis on speed and big data support. As the name suggests, the
