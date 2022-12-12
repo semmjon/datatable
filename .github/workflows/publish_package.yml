@@ -75,14 +75,14 @@ jobs:
 #                WINSDK_INCLUDE_PATH: C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0
 #                WINSDK_LIB_PATH: C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0
 
-#            - name: Rename Artifacts
-#              run: |
-#                python ci/audit.py
+            - name: Rename Artifacts
+              run: |
+                python ci/audit.py
 
             # Build and upload to PyPI
             - name: "Builds and uploads to PyPI"
               run: |
-                  python -m twine upload dist/* --skip-existing
+                  python -m twine upload dist/* --skip-existing --verbose
               env:
                   TWINE_USERNAME: __token__
                   TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
