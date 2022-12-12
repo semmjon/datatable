@@ -20,8 +20,8 @@ jobs:
     steps:
       - name: Install gcc
         run:  |
-          sudo yum install libstdc++
-          
+          yum install libstdc++
+
       - name: Check Path for MSVC
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
