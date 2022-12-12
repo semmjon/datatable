@@ -9,123 +9,116 @@ on:
 
 jobs:
     release_manylinux:
-      name: Build wheels on ${{ matrix.os }}
-      runs-on: ${{ matrix.os }}
-      strategy:
-        matrix:
-          os: [ ubuntu-20.04, windows-2019, macOS-10.15 ]
+        name: Release ManyLinux
+        runs-on: ${{ matrix.os }}
+        strategy:
+          matrix:
+            os: [ubuntu-linux]
+        steps:
+          - name: Check out the repository
+            uses: actions/checkout@v3.1.0
+            with:
+              fetch-depth: 2
+              remote: true
+              submodules: recursive
+          - name: Build wheels
+            uses: pypa/cibuildwheel@v2.11.3
+            env:
+              DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
+#               CIBW_SOME_OPTION: value
+            #    ...
+            with:
+              package-dir: .
+              output-dir: wheelhouse
+            #   config-file: "{package}/pyproject.toml"
 
-      steps:
-        - name: Check out the repository
-          uses: actions/checkout@v3.1.0
-          with:
-            fetch-depth: 2
-            remote: true
-            submodules: recursive
+    release:
+        name: Release Mac / Windows
+        runs-on: ${{ matrix.os }}
+#        if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
+        strategy:
+            matrix:
+                os: [macos-latest, windows-latest]
+                python: ["3.8", "3.9", "3.10", "3.11"]
+        steps:
+            - name: Check Path for MSVC
+              run: |
+                if [ "$RUNNER_OS" == "Linux" ]; then
+                  echo "linux"
+                elif [ "$RUNNER_OS" == "macOS" ]; then
+                  echo "mac"
+                elif [ "$RUNNER_OS" == "Windows" ]; then
+                  vswhere.exe -latest -property installationPath &&
+                  dir 'C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0'
+                  python -c 'import sys; print(sys.base_prefix);'
+                  dir 'C:\hostedtoolcache\windows\Python\3.8.10\x64'
+                else
+                  echo "$RUNNER_OS not supported";
+                  exit 1
+                fi
+              shell: bash
 
-        - uses: actions/setup-python@v2
-          name: Install Python
 
-        - name: Install cibuildwheel
-          run: python -m pip install cibuildwheel==1.8.0
+            - name: Check out the repository
+              uses: actions/checkout@v3.1.0
+              with:
+                fetch-depth: 2
+                remote: true
+                submodules: recursive
 
-        - name: Build wheels
-          run: python -m cibuildwheel --output-dir wheelhouse
-          env:
-            CIBW_SKIP: "cp27-* pp27-*"  # skip Python 2.7 wheels
-            DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
+            # Used to host cibuildwheel
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: ${{ matrix.python }}
 
-#        - uses: actions/upload-artifact@v2
-#          with:
-#            path: ./wheelhouse/*.whl
+            - name: Install Twine
+              run: |
+                pip install twine
 
-#    release:
-#        name: Release Mac / Windows
-#        runs-on: ${{ matrix.os }}
-##        if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
-#        strategy:
-#            matrix:
-#                os: [macos-latest, windows-latest]
-#                python: ["3.8", "3.9", "3.10", "3.11"]
-#        steps:
-#            - name: Check Path for MSVC
+#            - name: Install cibuildwheel
+#              run: python -m pip install cibuildwheel==2.11.3
+
+            - name: Build source
+              run: |
+                make sdist
+
+            - name: Build wheel
+              run: |
+                make wheel
+              env:
+                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
+
+#            - name: Build wheels
 #              run: |
-#                if [ "$RUNNER_OS" == "Linux" ]; then
-#                  echo "linux"
-#                elif [ "$RUNNER_OS" == "macOS" ]; then
-#                  echo "mac"
-#                elif [ "$RUNNER_OS" == "Windows" ]; then
-#                  vswhere.exe -latest -property installationPath &&
-#                  dir 'C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0'
-#                  python -c 'import sys; print(sys.base_prefix);'
-#                  dir 'C:\hostedtoolcache\windows\Python\3.8.10\x64'
-#                else
-#                  echo "$RUNNER_OS not supported";
-#                  exit 1
-#                fi
-#              shell: bash
-#
-#
-#            - name: Check out the repository
-#              uses: actions/checkout@v3.1.0
-#              with:
-#                fetch-depth: 2
-#                remote: true
-#                submodules: recursive
-#
-#            # Used to host cibuildwheel
-#            - name: Set up Python
-#              uses: actions/setup-python@v4
-#              with:
-#                python-version: ${{ matrix.python }}
-#
-#            - name: Install Twine
-#              run: |
-#                pip install twine
-#
-##            - name: Install cibuildwheel
-##              run: python -m pip install cibuildwheel==2.11.3
-#
-#            - name: Build source
-#              run: |
-#                make sdist
-#
-#            - name: Build wheel
-#              run: |
-#                make wheel
+#                python -m cibuildwheel --output-dir wheelhouse
 #              env:
 #                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
+#                CXX: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.34.31933\bin\HostX86\x64\cl.exe
+#                COMPILER_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.34.31933
+#                WINSDK_INCLUDE_PATH: C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0
+#                WINSDK_LIB_PATH: C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0
+
+#            - name: Build wheels
+#              run: |
+#                python -m pip install build
+#                python -m build .
+#                if [ "$RUNNER_OS" == "Linux" ]; then
+#                  pip install auditwheel
+#                  python -m auditwheel repair $(ls dist/*.whl)
+#                fi
+#              shell: bash
+#              env:
+#                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
+
+            # Build and upload to PyPI
+#            - name: "Builds and uploads to PyPI"
+#              run: |
+#                  python -m twine upload dist/* --skip-existing --verbose
+#              env:
+#                  TWINE_USERNAME: __token__
+#                  TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
 #
-##            - name: Build wheels
-##              run: |
-##                python -m cibuildwheel --output-dir wheelhouse
-##              env:
-##                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
-##                CXX: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.34.31933\bin\HostX86\x64\cl.exe
-##                COMPILER_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.34.31933
-##                WINSDK_INCLUDE_PATH: C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0
-##                WINSDK_LIB_PATH: C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0
-#
-##            - name: Build wheels
-##              run: |
-##                python -m pip install build
-##                python -m build .
-##                if [ "$RUNNER_OS" == "Linux" ]; then
-##                  pip install auditwheel
-##                  python -m auditwheel repair $(ls dist/*.whl)
-##                fi
-##              shell: bash
-##              env:
-##                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
-#
-#            # Build and upload to PyPI
-##            - name: "Builds and uploads to PyPI"
-##              run: |
-##                  python -m twine upload dist/* --skip-existing --verbose
-##              env:
-##                  TWINE_USERNAME: __token__
-##                  TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-##
-##            - uses: actions/upload-artifact@v3
-##              with:
-##                path: ./dist/*
+#            - uses: actions/upload-artifact@v3
+#              with:
+#                path: ./dist/*
