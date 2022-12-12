@@ -11,6 +11,7 @@ jobs:
   release:
     name: Release
     runs-on: ${{ matrix.os }}
+    container: quay.io/pypa/manylinux1_x86_64
     #        if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
     strategy:
       matrix:
@@ -73,9 +74,6 @@ jobs:
       #                COMPILER_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.34.31933
       #                WINSDK_INCLUDE_PATH: C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0
       #                WINSDK_LIB_PATH: C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0
-
-      - name: Run the build process with Docker
-        uses: docker://quay.io/pypa/manylinux1_x86_64
 
       - name: Build wheel
         run: |
