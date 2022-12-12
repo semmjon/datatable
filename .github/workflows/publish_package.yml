@@ -82,7 +82,7 @@ jobs:
             # Build and upload to PyPI
             - name: "Builds and uploads to PyPI"
               run: |
-                  python -m twine upload ./dist/* --skip-existing
+                  python -m twine upload ./wheelhouse/* --skip-existing
               env:
                   TWINE_USERNAME: __token__
                   TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}

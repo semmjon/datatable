@@ -2,7 +2,7 @@ import os
 import re
 
 source_dir = "dist"
-target_dir = "dist"
+target_dir = "wheelhouse"
 # print(os.getcwd())
 os.makedirs(target_dir, exist_ok=True)
 artifacts_file = os.listdir(source_dir)
