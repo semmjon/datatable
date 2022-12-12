@@ -318,7 +318,7 @@ class Wheel:
 
     @property
     def namever(self):
-        return self.name + '-' + self.version
+        return self.name.replace("-", "_") + '-' + self.version  # replace - with _ because not supported fo pypi
 
 
     @property

@@ -383,15 +383,17 @@ def get_meta():
 
         summary="Python library for fast multi-threaded data manipulation and "
                 "munging.",
-        description="""
-            This is a Python package for manipulating 2-dimensional tabular data
-            structures (aka data frames). It is close in spirit to pandas or SFrame;
-            however we put specific emphasis on speed and big data support. As the
-            name suggests, the package is closely related to R's data.table and
-            attempts to mimic its core algorithms and API.
-
-            See https://github.com/h2oai/datatable for more details.
-        """,
+        # description="""
+        #     This is a Python package for manipulating 2-dimensional tabular data
+        #     structures (aka data frames). It is close in spirit to pandas or SFrame;
+        #     however we put specific emphasis on speed and big data support. As the
+        #     name suggests, the package is closely related to R's data.table and
+        #     attempts to mimic its core algorithms and API.
+        #
+        #     See https://github.com/h2oai/datatable for more details.
+        # """,
+        description=open('README.md').read(),
+        description_content_type='text/markdown',
         keywords=["datatable", "data", "dataframe", "frame", "data.table",
                   "munging", "numpy", "pandas", "data processing", "ETL"],
 
