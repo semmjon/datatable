@@ -465,7 +465,7 @@ def generate_build_info(mode=None, strict=False):
         If True, then the errors in git commands will terminate the
         build process.
     """
-    version = get_datatable_version(mode)
+    version = re.sub("a0+.*", "", get_datatable_version(mode))
     build_date = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
     git_hash = shell_cmd(["git", "rev-parse", "HEAD"], strict=strict)
     # get the date of the commit (HEAD), as a Unix timestamp

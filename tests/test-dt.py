@@ -152,7 +152,7 @@ def test_dt_version():
         assert dt.build_info.git_date
         assert dt.build_info.version
         assert len(dt.build_info.git_revision) == 40
-        assert dt.build_info.version == dt.__version__
+        assert re.sub("a0+.*", "", dt.build_info.version) == dt.__version__
     assert dt.build_info.compiler.lower() != "unknown"
 
 
