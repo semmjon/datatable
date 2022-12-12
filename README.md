@@ -27,8 +27,7 @@
 [![License](https://img.shields.io/pypi/l/datatable.svg)](https://github.com/h2oai/datatable/blob/main/LICENSE)
 [![Build Status](https://travis-ci.org/h2oai/datatable.svg?branch=main)](https://travis-ci.org/h2oai/datatable)
 [![Documentation Status](https://readthedocs.org/projects/datatable/badge/?version=latest)](https://datatable.readthedocs.io/en/latest/?badge=latest)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e72cadff26ed4ad68decd61b66b4c563)](https://www.codacy.com/app/st-pasha/datatable?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=h2oai/datatable&amp;utm_campaign=Badge_Grade)
-
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/cefb760aba044dd489176a46cb36605c)](https://www.codacy.com/gh/semmjon/datatable/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=semmjon/datatable&amp;utm_campaign=Badge_Grade)
 This is a Python package for manipulating 2-dimensional tabular data structures
 (aka data frames). It is close in spirit to [pandas][] or [SFrame][]; however we
 put specific emphasis on speed and big data support. As the name suggests, the
