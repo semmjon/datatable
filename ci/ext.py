@@ -377,6 +377,7 @@ def generate_documentation(ext):
 
 
 def get_meta():
+    print(os.getcwd())
     return dict(
         name="python-datatable",
         version=re.sub("\+.*", "", _get_version_from_build_info()),  # pypi incompatible
@@ -629,6 +630,7 @@ def build_sdist(sdist_directory, config_settings=None):
     files += ["ci/ext.py", "ci/__init__.py", "ci/gendoc.py"]
     files += ["pyproject.toml"]
     files += ["LICENSE"]
+    files += ["README.md"]
     # See `is_source_distribution()`
     assert "VERSION.txt" not in files
 
