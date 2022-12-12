@@ -76,6 +76,8 @@ jobs:
 
       - name: Run the build process with Docker
         uses: docker://quay.io/pypa/manylinux1_x86_64
+
+      - name: Build wheel
         run: |
           python -m build .  
           if [ "$RUNNER_OS" == "Linux" ]; then
