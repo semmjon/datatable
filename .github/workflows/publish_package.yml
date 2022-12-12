@@ -82,7 +82,6 @@ jobs:
             # Build and upload to PyPI
             - name: "Builds and uploads to PyPI"
               run: |
-                  ls wheelhouse
                   python -m twine upload dist/* --skip-existing
               env:
                   TWINE_USERNAME: __token__
