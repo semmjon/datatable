@@ -15,6 +15,12 @@ jobs:
           matrix:
             os: [ubuntu-linux]
         steps:
+          - name: Check out the repository
+            uses: actions/checkout@v3.1.0
+            with:
+              fetch-depth: 2
+              remote: true
+              submodules: recursive
           - uses: RalfG/python-wheels-manylinux-build@v0.6.0
             with:
               python-versions: 'cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311'
