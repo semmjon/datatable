@@ -78,12 +78,34 @@ jobs:
 
       - name: Build wheel
         run: |
-          python3.8 -m pip install auditwheel
-          python3.8 -m pip install build
-          python3.8 -m build .  
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            python3.8 -m auditwheel repair $(ls dist/*.whl)
-          fi
+          ldd --version ldd # For debugging
+          python3.8 --version # For debugging
+          python3.9 --version # For debugging
+          python3.10 --version # For debugging
+               
+          python3.8 -m pip install --upgrade pip
+          python3.9 -m pip install --upgrade pip
+          python3.10 -m pip install --upgrade pip
+      
+          python3.8 -m pip install virtualenv
+          python3.9 -m pip install virtualenv
+          python3.10 -m pip install virtualenv
+      
+          python3.8 -m venv ./venv38
+          #        python3.9 -m venv ./venv39
+          #        python3.10 -m venv ./venv310
+      
+          source venv38/bin/activate
+          pip install twine
+          pip install auditwheel
+          pip install pytest
+          pip install build
+            
+          python -m build .  
+
+#          if [ "$RUNNER_OS" == "Linux" ]; then
+          python -m auditwheel repair $(ls dist/*.whl)
+#          fi
         shell: bash
         env:
           DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
