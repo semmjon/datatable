@@ -78,6 +78,7 @@ jobs:
             - name: Rename Artifacts
               run: |
                 if [ "$RUNNER_OS" == "Linux" ]; then
+                  pip install auditwheel
                   python -m auditwheel repair $(ls dist/*.whl)
                 fi
               shell: bash
