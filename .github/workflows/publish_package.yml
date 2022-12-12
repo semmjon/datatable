@@ -18,9 +18,6 @@ jobs:
         os: [ubuntu-latest]  # macos-latest, windows-latest
         python: ["3.8"]  # , "3.9", "3.10", "3.11"
     steps:
-      - name: Install gcc
-        run:  |
-          yum install libstdc++
 
       - name: Check Path for MSVC
         run: |
@@ -81,7 +78,7 @@ jobs:
 
       - name: Build wheel
         run: |
-          python3.8 -m pip insatll auditwheel
+          python3.8 -m pip install auditwheel
           python3.8 -m pip install build
           python3.8 -m build .  
           if [ "$RUNNER_OS" == "Linux" ]; then
