@@ -1,11 +1,11 @@
 name: Publish datatable to PyPI
 
-on:
-    release:
-        types: [published]
 #on:
-#  - push
-#  - pull_request
+#    release:
+#        types: [published]
+on:
+  - push
+  - pull_request
 
 jobs:
     release:
@@ -79,18 +79,20 @@ jobs:
               run: |
                 if [ "$RUNNER_OS" == "Linux" ]; then
                   pip install auditwheel
+                  python -m pip install cibuildwheel==2.11.3
+                  cibuildwheel --output-dir dist --platform linux 
                   python -m auditwheel repair $(ls dist/*.whl)
                 fi
               shell: bash
 
             # Build and upload to PyPI
-            - name: "Builds and uploads to PyPI"
-              run: |
-                  python -m twine upload dist/* --skip-existing --verbose
-              env:
-                  TWINE_USERNAME: __token__
-                  TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-
-            - uses: actions/upload-artifact@v3
-              with:
-                path: ./dist/*
+#            - name: "Builds and uploads to PyPI"
+#              run: |
+#                  python -m twine upload dist/* --skip-existing --verbose
+#              env:
+#                  TWINE_USERNAME: __token__
+#                  TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+#
+#            - uses: actions/upload-artifact@v3
+#              with:
+#                path: ./dist/*
