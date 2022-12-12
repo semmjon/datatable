@@ -20,6 +20,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 #-------------------------------------------------------------------------------
+import re
+
 from .frame import Frame
 from .expr import (mean, min, max, sd, isna, sum, count, first, abs, exp,
                    last, log, log10, f, g, median, cov, corr, countna, nunique, prod)
@@ -80,7 +82,7 @@ import datatable.str
 import datatable.time
 try:
     from ._build_info import build_info
-    __version__ = build_info.version
+    __version__ = re.sub("a0+.*", "", build_info.version)  # pypi incompatible
 except ImportError:
     __version__ = ""
 

@@ -55,3 +55,4 @@ src/core/documentation.cc
 # virtualenv
 .venv
 venv
+wheelhouse
