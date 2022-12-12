@@ -77,7 +77,10 @@ jobs:
 
             - name: Rename Artifacts
               run: |
-                python ci/audit.py
+                if [ "$RUNNER_OS" == "Linux" ]; then
+                  python -m auditwheel repair $(ls dist/*.whl)
+                fi
+              shell: bash
 
             # Build and upload to PyPI
             - name: "Builds and uploads to PyPI"

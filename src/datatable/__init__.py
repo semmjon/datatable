@@ -82,7 +82,7 @@ import datatable.str
 import datatable.time
 try:
     from ._build_info import build_info
-    __version__ = base_re.sub("a0+.*", "", build_info.version)  # pypi incompatible
+    __version__ = base_re.sub("\+.*", "", build_info.version)  # pypi incompatible
 except ImportError:
     __version__ = ""
 
