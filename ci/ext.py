@@ -379,7 +379,7 @@ def generate_documentation(ext):
 def get_meta():
     return dict(
         name="datatable",
-        version=_get_version_from_build_info(),
+        version=re.sub("a0+.*", "", _get_version_from_build_info()),  # pypi incompatible
 
         summary="Python library for fast multi-threaded data manipulation and "
                 "munging.",
