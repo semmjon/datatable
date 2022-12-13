@@ -62,6 +62,7 @@ jobs:
 
       - name: Auditwheel for manylinux
         run: |
+          python ci/audit.py
           if [ "$RUNNER_OS" == "Linux" ]; then
             pip install auditwheel
             auditwheel repair $(ls dist/*.whl) --plat manylinux_2_35_x86_64
