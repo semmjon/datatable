@@ -79,7 +79,7 @@ jobs:
             TWINE_USERNAME: __token__
             TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload
         run: |
             python -m twine upload dist/* --skip-existing --verbose
         env:
