@@ -53,28 +53,24 @@ jobs:
       - name: Build source
         run: |
           make sdist
+        env:
+          DT_RELEASE: 1.1.0
 
       - name: Build wheel
         run: |
           make wheel
         env:
           DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
+          DT_RELEASE: 1.1.0
 
       - name: Auditwheel for manylinux
         run: |
-          
           if [ "$RUNNER_OS" == "Linux" ]; then
-            export DT_RELEASE=$(cat VERSION.txt)
             pip install auditwheel
             auditwheel repair $(ls dist/*.whl) --plat manylinux_2_35_x86_64
             rm dist/*.whl
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-            export DT_RELEASE=$(cat VERSION.txt)
-          elif [ "$RUNNER_OS" == "Windows" ]; then
-            set /p DT_RELEASE=<VERSION.txt
           else
-            echo "$RUNNER_OS not supported";
-            exit 1
+            mv dist wheelhouse
           fi
           ls wheelhouse
         shell: bash
