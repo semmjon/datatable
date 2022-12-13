@@ -81,7 +81,7 @@ jobs:
 
       - name: Upload
         run: |
-            python -m twine upload dist/* --skip-existing --verbose
+            python -m twine upload wheelhouse/* --skip-existing --verbose
         env:
             TWINE_USERNAME: __token__
             TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
