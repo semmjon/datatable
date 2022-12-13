@@ -63,13 +63,23 @@ jobs:
 
       - name: Auditwheel for manylinux
         run: |
+          mkdir wheelhouse
           if [ "$RUNNER_OS" == "Linux" ]; then
             pip install auditwheel
             auditwheel repair $(ls dist/*.whl) --plat manylinux_2_35_x86_64
+            rm dist/*.whl
           fi
+          mv dist/*.tar.gz wheelhouse/
 
 #       Build and upload to PyPI
       - name: "Builds and uploads to PyPI"
+        run: |
+            python -m twine upload wheelhouse/* --skip-existing --verbose
+        env:
+            TWINE_USERNAME: __token__
+            TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+      - uses: actions/upload-artifact@v3
         run: |
             python -m twine upload dist/* --skip-existing --verbose
         env:
@@ -78,4 +88,4 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          path: ./dist/*
+          path: ./wheelhouse/*
