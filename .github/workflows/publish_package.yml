@@ -1,11 +1,11 @@
 name: Publish datatable to PyPI
 
-#on:
-#    release:
-#        types: [published]
 on:
-  - push
-  - pull_request
+    release:
+        types: [published]
+#on:
+#  - push
+#  - pull_request
 
 jobs:
   release:
@@ -73,6 +73,7 @@ jobs:
           fi
           ls dist
           ls wheelhouse
+        shell: bash
 
 #       Build and upload to PyPI
       - name: "Builds and uploads to PyPI"
