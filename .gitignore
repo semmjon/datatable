@@ -56,3 +56,4 @@ src/core/documentation.cc
 .venv
 venv
 wheelhouse
+ci/audit.py
