@@ -1,11 +1,11 @@
 name: Publish datatable to PyPI
 
-on:
-    release:
-        types: [published]
 #on:
-#  - push
-#  - pull_request
+#    release:
+#        types: [published]
+on:
+  - push
+  - pull_request
 
 jobs:
   release:
@@ -54,14 +54,14 @@ jobs:
         run: |
           make sdist
         env:
-          DT_RELEASE: 1.1.0
+          DT_RELEASE: true
 
       - name: Build wheel
         run: |
           make wheel
         env:
           DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
-          DT_RELEASE: 1.1.0
+          DT_RELEASE: true
 
       - name: Auditwheel for manylinux
         run: |
