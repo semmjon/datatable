@@ -1,11 +1,11 @@
 name: Publish datatable to PyPI
 
-#on:
-#    release:
-#        types: [published]
 on:
-  - push
-  - pull_request
+    release:
+        types: [published]
+#on:
+#  - push
+#  - pull_request
 
 jobs:
   release:
