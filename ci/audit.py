@@ -11,9 +11,9 @@ user = os.environ.get("USER", "")
 
 for file in artifacts_file:
     source = os.path.join(source_dir, file)
-    # target = os.path.join(target_dir, re.sub(f"^(.+)\\..+(-.+-.+-.+|.tar.gz)", "\\1\\2",
-    #                                          re.sub(f"a0[+](sdist|build)[.][0-9]+", "",
-    #                                                 file.replace("linux", "manylinux"))))
-    target = os.path.join(target_dir, file.replace("linux", "manylinux"))
+    target = os.path.join(target_dir, re.sub(f"^(.+)\\..+(-.+-.+-.+|.tar.gz)", "\\1\\2",
+                                             re.sub(f"\\+(sdist|build)[.][0-9]+", "",
+                                                    file.replace("linux", "manylinux"))))
+    # target = os.path.join(target_dir, file.replace("linux", "manylinux"))
     print(f"Move {source} to {target}")
     os.rename(source, target)

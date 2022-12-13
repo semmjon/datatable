@@ -377,11 +377,9 @@ def generate_documentation(ext):
 
 
 def get_meta():
-    print(os.getcwd())
     return dict(
-        name="python-datatable",
-        version=re.sub("\+.*", "", _get_version_from_build_info()),  # pypi incompatible
-
+        name="py-datatable",
+        version=_get_version_from_build_info(),  # pypi incompatible
         summary="Python library for fast multi-threaded data manipulation and "
                 "munging.",
         # description="""
@@ -468,7 +466,7 @@ def generate_build_info(mode=None, strict=False):
         If True, then the errors in git commands will terminate the
         build process.
     """
-    version = re.sub("\+.*", "", get_datatable_version(mode))
+    version = get_datatable_version(mode)
     build_date = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
     git_hash = shell_cmd(["git", "rev-parse", "HEAD"], strict=strict)
     # get the date of the commit (HEAD), as a Unix timestamp
