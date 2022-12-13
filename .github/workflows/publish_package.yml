@@ -11,8 +11,6 @@ jobs:
   release:
     name: Release
     runs-on: ${{ matrix.os }}
-    container: quay.io/pypa/manylinux2014_x86_64
-    #        if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
     strategy:
       matrix:
         os: [ubuntu-latest]  # macos-latest, windows-latest
@@ -49,82 +47,34 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
+      - name: Install Twine
+        run: |
+          python -m pip install twine
+
+      - name: Build source
+        run: |
+          make sdist
+
       - name: Build wheel
         run: |
-          yum install wget
-          yum install -y gcc libstdc++
-          wget -q https://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/gcc-4.8.2-16.3.fc20/libstdc++-4.8.2-16.3.el6.x86_64.rpm
-          wget -q https://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/gcc-4.8.2-16.3.fc20/libstdc++-devel-4.8.2-16.3.el6.x86_64.rpm
-          wget -q https://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/gcc-4.8.2-16.3.fc20/libstdc++-static-4.8.2-16.3.el6.x86_64.rpm
-          rpm --force --nodeps -Uh libstdc++-4.8.2-16.3.el6.x86_64.rpm libstdc++-devel-4.8.2-16.3.el6.x86_64.rpm libstdc++-static-4.8.2-16.3.el6.x86_64.rpm
-          wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-2.17-55.el6.x86_64.rpm
-          wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-common-2.17-55.el6.x86_64.rpm
-          wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-devel-2.17-55.el6.x86_64.rpm
-          wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-headers-2.17-55.el6.x86_64.rpm
-          wget https://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/nscd-2.17-55.el6.x86_64.rpm
-          rpm --force --nodeps -Uvh glibc-2.17-55.el6.x86_64.rpm glibc-common-2.17-55.el6.x86_64.rpm glibc-devel-2.17-55.el6.x86_64.rpm glibc-headers-2.17-55.el6.x86_64.rpm nscd-2.17-55.el6.x86_64.rpm            
-          ldd --version ldd
-          python3.8 --version
-          python3.9 --version
-          python3.10 --version
+          make wheel
+        env:
+          DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
 
-          python3.8 -m pip install --upgrade pip
-          python3.9 -m pip install --upgrade pip
-          python3.10 -m pip install --upgrade pip
+      - name: Auditwheel for manylinux
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            auditwheel repair dist/$(ls dist/*.whl) --plat manylinux_2_35_x86_64
+          fi
 
-          python3.8 -m pip install virtualenv
-          python3.9 -m pip install virtualenv
-          python3.10 -m pip install virtualenv
+#       Build and upload to PyPI
+      - name: "Builds and uploads to PyPI"
+        run: |
+            python -m twine upload dist/* --skip-existing --verbose
+        env:
+            TWINE_USERNAME: __token__
+            TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
 
-          python3.8 -m venv ./venv38
-          source venv38/bin/activate
-          pip install twine
-          pip install auditwheel
-          pip install pytest
-          pip install build
-          
-          python -m build .
-          python -m auditwheel repair $(ls dist/*.whl)
-#          if [ "$RUNNER_OS" == "Linux" ]; then
-#          fi
-#        shell: bash
-#        env:
-#          DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
-      #
-      #      - name: Install Twine
-      #        run: |
-      #          python -m pip install twine
-      #            - name: Install cibuildwheel
-      #              run: python -m pip install cibuildwheel==2.11.3
-
-      #            - name: Build source
-      #              run: |
-      #                make sdist
-      #
-      #            - name: Build wheel
-      #              run: |
-      #                make wheel
-      #              env:
-      #                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
-
-      #            - name: Build wheels
-      #              run: |
-      #                python -m cibuildwheel --output-dir wheelhouse
-      #              env:
-      #                DT_MSVC_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\
-      #                CXX: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.34.31933\bin\HostX86\x64\cl.exe
-      #                COMPILER_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.34.31933
-      #                WINSDK_INCLUDE_PATH: C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0
-      #                WINSDK_LIB_PATH: C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0
-
-      # Build and upload to PyPI
-#            - name: "Builds and uploads to PyPI"
-#              run: |
-#                  python -m twine upload dist/* --skip-existing --verbose
-#              env:
-#                  TWINE_USERNAME: __token__
-#                  TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-#
-#            - uses: actions/upload-artifact@v3
-#              with:
-#                path: ./dist/*
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./dist/*
