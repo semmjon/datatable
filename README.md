@@ -25,9 +25,10 @@
 [![Gitter chat](https://badges.gitter.im/h2oai/datatable.png)](https://gitter.im/h2oai/datatable)
 [![PyPi version](https://img.shields.io/pypi/v/datatable.svg)](https://pypi.org/project/datatable/)
 [![License](https://img.shields.io/pypi/l/datatable.svg)](https://github.com/h2oai/datatable/blob/main/LICENSE)
-[![Build Status](https://travis-ci.org/h2oai/datatable.svg?branch=main)](https://travis-ci.org/h2oai/datatable)
 [![Documentation Status](https://readthedocs.org/projects/datatable/badge/?version=latest)](https://datatable.readthedocs.io/en/latest/?badge=latest)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cefb760aba044dd489176a46cb36605c)](https://www.codacy.com/gh/semmjon/datatable/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=semmjon/datatable&amp;utm_campaign=Badge_Grade)
+[![Tests](https://github.com/semmjon/datatable/actions/workflows/run_tests.yml/badge.svg)](https://github.com/semmjon/datatable/actions/workflows/run_tests.yml)
+[![Publish](https://github.com/semmjon/datatable/actions/workflows/publish_package.yml/badge.svg)](https://github.com/semmjon/datatable/actions/workflows/publish_package.yml)
 
 This is an automate Fork of datatable.
 Because there is no automated build / publish pipeline for the datatable package, and it is not optimal to always install from GitHub.
