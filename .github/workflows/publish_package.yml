@@ -69,7 +69,6 @@ jobs:
           else
             mv dist wheelhouse
           fi
-          ls dist
           ls wheelhouse
         shell: bash
 
