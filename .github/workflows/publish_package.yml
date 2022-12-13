@@ -62,17 +62,22 @@ jobs:
 
       - name: Auditwheel for manylinux
         run: |
+          
           if [ "$RUNNER_OS" == "Linux" ]; then
+            export DT_RELEASE=$(cat VERSION.txt)
             pip install auditwheel
             auditwheel repair $(ls dist/*.whl) --plat manylinux_2_35_x86_64
             rm dist/*.whl
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            export DT_RELEASE=$(cat VERSION.txt)
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            set /p DT_RELEASE=<VERSION.txt
           else
-            mv dist wheelhouse
+            echo "$RUNNER_OS not supported";
+            exit 1
           fi
           ls wheelhouse
         shell: bash
-        env:
-          DT_RELEASE: 1.1.0
 
 #       Build and upload to PyPI
       - name: "Builds and uploads to PyPI"
