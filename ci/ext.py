@@ -378,7 +378,7 @@ def generate_documentation(ext):
 
 def get_meta():
     return dict(
-        name="py-datatable",
+        name="python-datatable",
         version=_get_version_from_build_info(),
         summary="Python library for fast multi-threaded data manipulation and "
                 "munging.",
